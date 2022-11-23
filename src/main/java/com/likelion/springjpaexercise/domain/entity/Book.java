@@ -15,6 +15,8 @@ public class Book {
     @Id
     private Long id;
     private String name;
-    private Long authorId;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
 }
