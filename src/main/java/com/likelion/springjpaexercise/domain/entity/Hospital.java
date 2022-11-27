@@ -24,6 +24,6 @@ public class Hospital {
     private String hospitalName;
 
     //지연로딩 -필요한 시점에 연관된 데이터를 불러오는 것(fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "hospital", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hospital", fetch = FetchType .LAZY)
     private List<Review> reviews;
 }

@@ -2,13 +2,16 @@ package com.likelion.springjpaexercise.service;
 
 import com.likelion.springjpaexercise.domain.dto.ReviewCreateRequest;
 import com.likelion.springjpaexercise.domain.dto.ReviewCreateResponse;
+import com.likelion.springjpaexercise.domain.dto.ReviewReadResponse;
 import com.likelion.springjpaexercise.domain.entity.Hospital;
 import com.likelion.springjpaexercise.domain.entity.Review;
 import com.likelion.springjpaexercise.repository.HospitalRepository;
 import com.likelion.springjpaexercise.repository.ReviewRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewService {
@@ -47,5 +50,20 @@ public class ReviewService {
         Review review = reviewRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("해당 id가 없습니다."));
         return review;
+    }
+
+    public List<ReviewReadResponse> findAllByHospitalId(Long hospitalId) {
+        Hospital hospital = hospitalRepository.findById(hospitalId)
+                .orElseThrow(()-> new IllegalArgumentException("해당 id가 없습니다."));
+        List<ReviewReadResponse> reviews = reviewRepository.findByHospital(hospital)
+                .stream().map(review -> ReviewReadResponse.builder()
+                        .id(review.getId())
+                        .title(review.getTitle())
+                        .content(review.getContent())
+                        .patientName(review.getPatientName())
+                        .hospitalName(review.getHospital().getHospitalName())
+                        .build()
+                ).collect(Collectors.toList());
+        return reviews;
     }
 }

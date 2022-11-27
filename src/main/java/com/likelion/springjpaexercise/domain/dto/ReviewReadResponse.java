@@ -1,5 +1,6 @@
 package com.likelion.springjpaexercise.domain.dto;
 
+import com.likelion.springjpaexercise.domain.entity.Review;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,4 +16,15 @@ public class ReviewReadResponse {
     private String content;
     private String patientName;
     private String hospitalName;
+
+    public static ReviewReadResponse fromEntity(Review review) {
+        ReviewReadResponse response = ReviewReadResponse.builder()
+                .id(review.getId())
+                .title(review.getTitle())
+                .content(review.getContent())
+                .patientName(review.getPatientName())
+                .hospitalName(review.getHospital().getHospitalName()) //매핑된 결과
+                .build();
+        return response;
+    }
 }
